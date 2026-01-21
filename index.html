@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sentence Slot Machine</title>
+  <style>
+    :root { --h: 56px; --w: 280px; --gap: 14px; }
+    body { font-family: system-ui, Arial, sans-serif; margin: 24px; }
+    h1 { font-size: 20px; margin: 0 0 12px; }
+    .wrap { display: grid; gap: 14px; max-width: calc(var(--w) * 3 + var(--gap) * 2); }
+    .machine { display: grid; grid-template-columns: repeat(3, var(--w)); gap: var(--gap); align-items: start; }
+    .reelBox {
+      border: 2px solid #222; border-radius: 14px; overflow: hidden; background: #fff;
+      position: relative;
+    }
+    .window {
+      height: calc(var(--h) * 3);
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scrollbar-width: thin;
+    }
+    .item {
+      height: var(--h);
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 12px;
+      scroll-snap-align: center;
+      border-bottom: 1px solid #e8e8e8;
+      font-size: 18px;
+      text-align: center;
+    }
+    .item:last-child { border-bottom: none; }
+    .payline {
+      position: absolute; left: 0; right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: var(--h);
+      border-top: 2px solid #e11;
+      border-bottom: 2px solid #e11;
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(255,0,0,.06), rgba(255,0,0,0));
+    }
+    .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    button {
+      padding: 10px 14px; border-radius: 10px; border: 2px solid #222; background: #fff;
+      font-weight: 600; cursor: pointer;
+    }
+    button:active { transform: translateY(1px); }
+    .out { padding: 12px 14px; border: 1px solid #ddd; border-radius: 12px; }
+    .hint { font-size: 13px; color: #555; margin-top: 6px; }
+    @media (max-width: 920px) {
+  .machine { grid-template-columns: repeat(3, 1fr); }
+  :root { --w: 30vw; }
+}
+  </style>
+</head>
+<body>
+  <h1>Sentence Slot Machine</h1>
+
+  <div class="wrap">
+    <div class="machine" aria-label="Slot machine with three word reels">
+      <div class="reelBox">
+        <div class="payline" aria-hidden="true"></div>
+        <div class="window" id="reel1" tabindex="0" aria-label="Reel 1"></div>
+      </div>
+
+      <div class="reelBox">
+        <div class="payline" aria-hidden="true"></div>
+        <div class="window" id="reel2" tabindex="0" aria-label="Reel 2"></div>
+      </div>
+
+      <div class="reelBox">
+        <div class="payline" aria-hidden="true"></div>
+        <div class="window" id="reel3" tabindex="0" aria-label="Reel 3"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="spin">Spin all</button>
+      <button id="lock1">Lock Reel 1: Off</button>
+      <button id="lock2">Lock Reel 2: Off</button>
+      <button id="lock3">Lock Reel 3: Off</button>
+      <button id="copy">Copy sentence</button>
+    </div>
+
+    <div class="out">
+      <div><strong>Result:</strong> <span id="result">—</span></div>
+      <div class="hint">Students can also scroll each reel manually and stop on the red payline.</div>
+    </div>
+  </div>
+
+  <script>
+    // === EDIT YOUR WORD LISTS HERE ===
+    const LIST1 = [
+     "understanding",
+    "examining",
+    "acknowledging",
+    "overcoming",
+    "giving in to",
+    "(dis)respecting",
+    "focusing on",
+    "becoming",
+    "displaying",
+    "ignoring",
+    "believing in",
+    "choosing",
+    "trusting in",
+    "using",
+    "overusing",
+    "maintaining",
+    "committing to",
+    "desiring",
+    "accepting" ];
+
+    const LIST2 = ["faith",
+    "friendship",
+    "perseverance",
+    "hardships",
+    "family",
+    "death",
+    "truth",
+    "differences",
+    "success",
+    "honesty",
+    "$/goods",
+    "technology",
+    "respect",
+    "bravery",
+    "hopes/desires",
+    "nature",
+    "obsession",
+    "humor",
+    "time",
+    "gratitude",
+    "dignity",
+    "compassion",
+    "beauty",
+    "tradition",
+    "responsibility",
+    "obedience",
+    "rules",
+    "expectations of",
+    "recklessness",
+    "loyalty",
+    "pressure",
+    "youth" ];
+
+    const LIST3 = [
+      "can",
+    "cannot",
+    "should",
+    "should not",
+    "is/are",
+    "could",
+    "could not",
+    "makes",
+    "builds",
+    "enables",
+    "creates",
+    "helps",
+    "encourages",
+    "causes",
+    "is the cause of",
+    "ruins",
+    "destroys",
+    "blinds people to",
+    "simplifies"
+    ];
+    // =================================
+
+    const ITEM_H = 56; // must match --h in CSS
+    const REPEAT = 8;  // makes the reels feel longer
+
+    const state = {
+      lock: [false, false, false],
+      lists: [LIST1, LIST2, LIST3],
+      reels: []
+    };
+
+    function buildReel(el, list) {
+      el.innerHTML = "";
+      const extended = [];
+      for (let r = 0; r < REPEAT; r++) extended.push(...list);
+
+      extended.forEach((txt) => {
+        const d = document.createElement("div");
+        d.className = "item";
+        d.textContent = txt;
+        el.appendChild(d);
+      });
+
+      // Start roughly in the middle so scrolling feels natural
+      const midIndex = Math.floor(extended.length / 2);
+      el.scrollTop = midIndex * ITEM_H;
+    }
+
+    function nearestIndex(el) {
+      return Math.round(el.scrollTop / ITEM_H);
+    }
+
+    function getCenteredText(el, list) {
+      const idx = nearestIndex(el);
+      const baseIdx = ((idx % list.length) + list.length) % list.length;
+      return list[baseIdx];
+    }
+
+    function updateResult() {
+      const [r1, r2, r3] = state.reels;
+      const a = getCenteredText(r1, LIST1);
+      const b = getCenteredText(r2, LIST2);
+      const c = getCenteredText(r3, LIST3);
+      document.getElementById("result").textContent = `${a} ${b} ${c}`;
+    }
+
+    function spinOne(el, list) {
+      const current = nearestIndex(el);
+      const jump = Math.floor(Math.random() * list.length) + list.length * 2; // at least 2 full cycles
+      const target = current + jump;
+
+      el.scrollTo({ top: target * ITEM_H, behavior: "smooth" });
+
+      // Snap to exact item after smooth scroll settles
+      setTimeout(() => {
+        const snapped = nearestIndex(el);
+        el.scrollTo({ top: snapped * ITEM_H, behavior: "auto" });
+        updateResult();
+      }, 550);
+    }
+
+    function wireReel(el) {
+      let t = null;
+      el.addEventListener("scroll", () => {
+        clearTimeout(t);
+        t = setTimeout(() => {
+          const snapped = nearestIndex(el);
+          el.scrollTo({ top: snapped * ITEM_H, behavior: "auto" });
+          updateResult();
+        }, 90);
+      });
+    }
+
+    function toggleLock(i, btn) {
+      state.lock[i] = !state.lock[i];
+      btn.textContent = `Lock Reel ${i + 1}: ${state.lock[i] ? "On" : "Off"}`;
+    }
+
+    // Init
+    const r1 = document.getElementById("reel1");
+    const r2 = document.getElementById("reel2");
+    const r3 = document.getElementById("reel3");
+    state.reels = [r1, r2, r3];
+
+    buildReel(r1, LIST1); buildReel(r2, LIST2); buildReel(r3, LIST3);
+    wireReel(r1); wireReel(r2); wireReel(r3);
+    updateResult();
+
+    // Buttons
+    document.getElementById("spin").addEventListener("click", () => {
+      if (!state.lock[0]) spinOne(r1, LIST1);
+      if (!state.lock[1]) spinOne(r2, LIST2);
+      if (!state.lock[2]) spinOne(r3, LIST3);
+      setTimeout(updateResult, 650);
+    });
+
+    document.getElementById("lock1").addEventListener("click", (e) => toggleLock(0, e.target));
+    document.getElementById("lock2").addEventListener("click", (e) => toggleLock(1, e.target));
+    document.getElementById("lock3").addEventListener("click", (e) => toggleLock(2, e.target));
+
+    document.getElementById("copy").addEventListener("click", async () => {
+      const text = document.getElementById("result").textContent;
+      try { await navigator.clipboard.writeText(text); }
+      catch { /* ignore */ }
+    });
+  </script>
+</body>
+</html>
