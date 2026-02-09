@@ -203,9 +203,21 @@ function attachHandlers() {
   });
 }
 
+function resetAll() {
+  state.idx = [0, 0, 0, 0];
+  render();
+}
+
 function init() {
   attachHandlers();
+
+  const resetBtn = document.getElementById("resetBtn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", resetAll);
+  }
+
   render();
+}
 }
 
 init();
