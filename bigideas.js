@@ -10,7 +10,7 @@
 // REPLACE the placeholder arrays later with your finalized reel lists.
 const REELS = [
   // Reel 1
-  ["revealing",
+  ["—","revealing",
   "exposing",
   "complicating",
   "challenging",
@@ -37,7 +37,7 @@ const REELS = [
   "sacrificing",
   "prioritizing"],
   // Reel 2
-  ["identity",
+  ["—","identity",
   "power",
   "control",
   "freedom",
@@ -65,7 +65,7 @@ const REELS = [
   "conflict between",
   "tension between"],
   // Reel 3
-  ["suggests",
+  ["—","suggests",
   "implies",
   "reveals",
   "demonstrates",
@@ -85,7 +85,7 @@ const REELS = [
   "destabilizes",
   "calls into question"],
   // Reel 4
-  ["trust",
+  ["—","trust",
   "identity",
   "belonging",
   "power",
