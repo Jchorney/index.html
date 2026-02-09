@@ -59,20 +59,23 @@ button{
   border-top:2px solid #2a3442;
 }
 
-.reference h3{
-  margin:18px 0 6px;
-  font-size:14px;
+.reelBlock{
+  margin-bottom:28px;
+}
+
+.reelBlock h3{
+  margin:0 0 8px;
+  font-size:15px;
   color:#c9d6e5;
 }
 
-.reference ul{
+.reelBlock ul{
   list-style:none;
   padding:0;
-  margin:0 0 16px 0;
-  column-count:1;
+  margin:0;
 }
 
-.reference li{
+.reelBlock li{
   padding:2px 0;
   color:#9fb0c3;
 }
@@ -115,23 +118,32 @@ button{
 </div>
 
 <div class="reference">
-  <h3>Reel 1 – Actions / Processes</h3>
-  <ul id="list0"></ul>
 
-  <h3>Reel 2 – Ideas / Concepts</h3>
-  <ul id="list1"></ul>
+  <div class="reelBlock">
+    <h3>Reel 1 – Actions / Processes</h3>
+    <ul id="list0"></ul>
+  </div>
 
-  <ul id="list2"></ul>
+  <div class="reelBlock">
+    <h3>Reel 2 – Ideas / Concepts</h3>
+    <ul id="list1"></ul>
+  </div>
 
-  <h3>Reel 4 – Outcomes / Focus</h3>
-  <ul id="list3"></ul>
+  <div class="reelBlock">
+    <ul id="list2"></ul>
+  </div>
+
+  <div class="reelBlock">
+    <h3>Reel 4 – Outcomes / Focus</h3>
+    <ul id="list3"></ul>
+  </div>
+
 </div>
 
 <script>
 const REELS = [
   [
-    "—",
-    "revealing","exposing","complicating","challenging","reinforcing",
+    "—","revealing","exposing","complicating","challenging","reinforcing",
     "undermining","reframing","interrogating","emphasizing","mirroring",
     "contrasting","amplifying","suppressing","responding to","responding with",
     "reacting to","struggling with","coping with","conforming to",
@@ -139,23 +151,20 @@ const REELS = [
     "navigating through","choosing between","sacrificing","prioritizing"
   ],
   [
-    "—",
-    "identity","power","control","freedom","belonging","responsibility",
+    "—","identity","power","control","freedom","belonging","responsibility",
     "morality","justice","authority","independence","conformity","resistance",
     "empathy","trust","ambition","fear","change","sacrifice",
     "fear of","desire for","pressure to","responsibility for","loyalty to",
     "dependence on","belief in","conflict between","tension between"
   ],
   [
-    "—",
-    "suggests","implies","reveals","demonstrates","shows","highlights",
+    "—","suggests","implies","reveals","demonstrates","shows","highlights",
     "emphasizes","reinforces","challenges","complicates","questions",
     "critiques","exposes","warns","affirms","undermines","reframes",
     "destabilizes","calls into question"
   ],
   [
-    "—",
-    "trust","identity","belonging","power","freedom","responsibility",
+    "—","trust","identity","belonging","power","freedom","responsibility",
     "morality","empathy","authority","independence",
     "the cost of","the consequences of","the limits of","the value of",
     "the importance of","the complexity of","the risks of","the impact of",
