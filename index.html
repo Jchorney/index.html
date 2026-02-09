@@ -5,54 +5,76 @@
 <title>Big Idea Creator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body{
-  background:#0b0f14;
-  color:#e8eef7;
-  font-family:system-ui;
-  padding:32px;
-}
-.reels{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-top:20px;
-}
-.reel{
-  border:1px solid #333;
-  padding:16px;
-  border-radius:14px;
-  text-align:center;
-}
-button{
-  margin:6px;
-  padding:8px 14px;
-  cursor:pointer;
-}
-.val{
-  font-size:18px;
-  margin:10px 0;
-}
-#result{
-  margin-top:28px;
-  font-size:22px;
-}
+  body{
+    background:#0b0f14;
+    color:#e8eef7;
+    font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    padding:32px;
+  }
+  h1{margin:0 0 6px}
+  p{margin:4px 0 14px;color:#9fb0c3}
+  .reels{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-top:20px;
+  }
+  .reel{
+    border:1px solid #333;
+    border-radius:14px;
+    padding:14px;
+    text-align:center;
+  }
+  button{
+    padding:8px 14px;
+    margin:6px;
+    cursor:pointer;
+  }
+  .val{
+    font-size:18px;
+    margin:10px 0;
+    cursor:pointer;
+    min-height:24px;
+  }
+  #result{
+    margin-top:28px;
+    font-size:22px;
+    min-height:28px;
+  }
 </style>
 </head>
 <body>
 
 <h1>Big Idea Creator</h1>
-<p>Use arrows or click the text.</p>
+<p>Use the arrows or click the text to move through ideas.</p>
 <p>Consider starting with Reel 2. What is the main idea or topic of the text? Then build from left to right.</p>
 
 <div class="reels">
-  <div class="reel" data-r="0"><button>▲</button><div class="val">—</div><button>▼</button></div>
-  <div class="reel" data-r="1"><button>▲</button><div class="val">—</div><button>▼</button></div>
-  <div class="reel" data-r="2"><button>▲</button><div class="val">—</div><button>▼</button></div>
-  <div class="reel" data-r="3"><button>▲</button><div class="val">—</div><button>▼</button></div>
+  <div class="reel">
+    <button onclick="step(0,1)">▲</button>
+    <div class="val" id="v0" onclick="step(0,1)">—</div>
+    <button onclick="step(0,-1)">▼</button>
+  </div>
+  <div class="reel">
+    <button onclick="step(1,1)">▲</button>
+    <div class="val" id="v1" onclick="step(1,1)">—</div>
+    <button onclick="step(1,-1)">▼</button>
+  </div>
+  <div class="reel">
+    <button onclick="step(2,1)">▲</button>
+    <div class="val" id="v2" onclick="step(2,1)">—</div>
+    <button onclick="step(2,-1)">▼</button>
+  </div>
+  <div class="reel">
+    <button onclick="step(3,1)">▲</button>
+    <div class="val" id="v3" onclick="step(3,1)">—</div>
+    <button onclick="step(3,-1)">▼</button>
+  </div>
 </div>
 
 <div id="result">—</div>
-<button id="reset">Reset</button>
+<button onclick="resetAll()">Reset</button>
+<button onclick="copyResult()">Copy</button>
 
 <script>
 const REELS = [
@@ -166,29 +188,30 @@ const REELS = [
   ]
 ];
 
-let idx=[0,0,0,0];
+let idx = [0,0,0,0];
+
+function step(r,d){
+  idx[r] = (idx[r] + d + REELS[r].length) % REELS[r].length;
+  render();
+}
+
+function resetAll(){
+  idx = [0,0,0,0];
+  render();
+}
+
+function copyResult(){
+  const t = document.getElementById("result").textContent;
+  if(t && t !== "—") navigator.clipboard.writeText(t);
+}
 
 function render(){
-  document.querySelectorAll(".reel").forEach(r=>{
-    const i=r.dataset.r;
-    r.querySelector(".val").textContent=REELS[i][idx[i]];
-  });
+  for(let i=0;i<4;i++){
+    document.getElementById("v"+i).textContent = REELS[i][idx[i]];
+  }
   document.getElementById("result").textContent =
     idx.map((_,i)=>REELS[i][idx[i]]).filter(x=>x!=="—").join(" ") || "—";
 }
-
-document.querySelectorAll(".reel").forEach(r=>{
-  const i=r.dataset.r;
-  const [up,,down]=r.children;
-  up.onclick=()=>{idx[i]=(idx[i]+1)%REELS[i].length;render();}
-  down.onclick=()=>{idx[i]=(idx[i]-1+REELS[i].length)%REELS[i].length;render();}
-  r.querySelector(".val").onclick=()=>{idx[i]=(idx[i]+1)%REELS[i].length;render();}
-});
-
-document.getElementById("reset").onclick=()=>{
-  idx=[0,0,0,0];
-  render();
-};
 
 render();
 </script>
