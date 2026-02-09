@@ -67,10 +67,160 @@
   </main>
 
 <script>
-  document.write('<script src="bigideas.js?v=' + Date.now() + '"><\/script>');
+"use strict";
+
+const REELS = [
+  [
+    "—",
+    "revealing",
+    "exposing",
+    "complicating",
+    "challenging",
+    "reinforcing",
+    "undermining",
+    "reframing",
+    "interrogating",
+    "emphasizing",
+    "mirroring",
+    "contrasting",
+    "amplifying",
+    "suppressing",
+    "responding to",
+    "responding with",
+    "reacting to",
+    "struggling with",
+    "coping with",
+    "conforming to",
+    "rebelling against",
+    "submitting to",
+    "negotiating with",
+    "navigating through",
+    "choosing between",
+    "sacrificing",
+    "prioritizing"
+  ],
+  [
+    "—",
+    "identity",
+    "power",
+    "control",
+    "freedom",
+    "belonging",
+    "responsibility",
+    "morality",
+    "justice",
+    "authority",
+    "independence",
+    "conformity",
+    "resistance",
+    "empathy",
+    "trust",
+    "ambition",
+    "fear",
+    "change",
+    "sacrifice",
+    "fear of",
+    "desire for",
+    "pressure to",
+    "responsibility for",
+    "loyalty to",
+    "dependence on",
+    "belief in",
+    "conflict between",
+    "tension between"
+  ],
+  [
+    "—",
+    "suggests",
+    "implies",
+    "reveals",
+    "demonstrates",
+    "shows",
+    "highlights",
+    "emphasizes",
+    "reinforces",
+    "challenges",
+    "complicates",
+    "questions",
+    "critiques",
+    "exposes",
+    "warns",
+    "affirms",
+    "undermines",
+    "reframes",
+    "destabilizes",
+    "calls into question"
+  ],
+  [
+    "—",
+    "trust",
+    "identity",
+    "belonging",
+    "power",
+    "freedom",
+    "responsibility",
+    "morality",
+    "empathy",
+    "authority",
+    "independence",
+    "the cost of",
+    "the consequences of",
+    "the limits of",
+    "the value of",
+    "the importance of",
+    "the complexity of",
+    "the risks of",
+    "the impact of",
+    "the dangers of",
+    "the tension between",
+    "the balance between",
+    "our understanding of",
+    "assumptions about",
+    "expectations surrounding"
+  ]
+];
+
+const state = { idx: [0,0,0,0] };
+
+function current(r){ return REELS[r][state.idx[r]]; }
+
+function render(){
+  document.querySelectorAll(".reel").forEach(el=>{
+    const r = +el.dataset.reel;
+    el.querySelector(".reelValue").textContent = current(r);
+  });
+  document.getElementById("result").textContent =
+    state.idx.map((_,i)=>current(i)).filter(x=>x!=="—").join(" ") || "—";
+}
+
+function step(r,dir){
+  state.idx[r]=(state.idx[r]+dir+REELS[r].length)%REELS[r].length;
+  render();
+}
+
+document.querySelectorAll(".reel").forEach(el=>{
+  const r = +el.dataset.reel;
+  el.querySelectorAll(".navBtn").forEach(b=>{
+    b.onclick=()=>step(r,+b.dataset.dir);
+  });
+  el.querySelector(".reelValue").onclick=()=>step(r,1);
+});
+
+document.getElementById("resetBtn").onclick=()=>{
+  state.idx=[0,0,0,0];
+  render();
+};
+
+document.getElementById("copyBtn").onclick=()=>{
+  const t=document.getElementById("result").textContent;
+  if(t!=="—") navigator.clipboard.writeText(t);
+};
+
+render();
 </script>
 </body>
 </html>
+
 
 
 
