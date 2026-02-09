@@ -2,223 +2,288 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Big Idea Creator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Big Idea Creator</title>
 
 <style>
-body{
-  background:#0b0f14;
-  color:#e8eef7;
-  font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  padding:32px;
+:root {
+  --bg:#0b0f14;
+  --panel:#121821;
+  --border:#1e2633;
+  --text:#e6ebf2;
+  --muted:#9aa4b2;
+  --accent:#4ea1ff;
 }
 
-h1{margin:0 0 6px}
-p{margin:4px 0 14px;color:#9fb0c3}
+body {
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1200px 600px at top left, #12203a 0%, var(--bg) 45%);
+  color:var(--text);
+}
 
-.reels{
+main {
+  max-width:1100px;
+  margin:40px auto;
+  padding:0 24px 60px;
+}
+
+h1 {
+  margin:0 0 6px;
+  font-size:32px;
+}
+
+.sub {
+  color:var(--muted);
+  margin-bottom:14px;
+}
+
+.instructions {
+  margin-bottom:26px;
+}
+
+.reels {
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-  margin-top:20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap:18px;
 }
 
-.reel{
-  border:1px solid #333;
+.reel {
+  background:var(--panel);
+  border:1px solid var(--border);
   border-radius:14px;
-  padding:14px;
+  padding:16px;
   text-align:center;
 }
 
-button{
-  padding:8px 14px;
-  margin:6px;
-  cursor:pointer;
+.reel h3 {
+  margin:0 0 10px;
+  font-size:14px;
+  color:var(--muted);
 }
 
-.val{
-  font-size:18px;
+.value {
+  font-size:20px;
+  font-weight:600;
+  min-height:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.nav {
+  display:flex;
+  justify-content:center;
+  gap:10px;
   margin:10px 0;
+}
+
+button {
   cursor:pointer;
-  min-height:24px;
+  background:#fff;
+  color:#000;
+  border:none;
+  border-radius:6px;
+  padding:6px 10px;
+  font-weight:600;
 }
 
-#result{
-  margin-top:28px;
-  font-size:22px;
-  min-height:28px;
+.result {
+  margin-top:26px;
+  padding:16px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:14px;
 }
 
-.controls{
-  margin-top:8px;
+.resultText {
+  font-size:20px;
+  margin-bottom:12px;
 }
 
-.reference{
-  margin-top:40px;
-  padding-top:24px;
-  border-top:2px solid #2a3442;
+.actions {
+  display:flex;
+  gap:10px;
 }
 
-.reelBlock{
-  margin:0 0 28px 0;
-  padding:0;
+.divider {
+  margin:40px 0 24px;
+  border-top:1px solid var(--border);
 }
 
-.reelBlock h3{
-  margin:0 0 10px 0;
-  font-size:15px;
-  color:#c9d6e5;
+/* Lists */
+.lists {
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:30px;
 }
 
-.reelBlock ul{
+.list h4 {
+  margin:0 0 10px;
+  font-size:14px;
+  color:var(--accent);
+}
+
+.list ul {
   list-style:none;
   padding:0;
   margin:0;
 }
 
-.reelBlock li{
-  padding:2px 0;
-  color:#9fb0c3;
+.list li {
+  margin:6px 0;
+  font-size:14px;
+  color:var(--text);
+}
+
+@media (max-width: 900px) {
+  .reels, .lists {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .reels, .lists {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
 
 <body>
+<main>
 
 <h1>Big Idea Creator</h1>
-<p>Use the arrows or click the text to move through ideas.</p>
-<p>Consider starting with Reel 2. What is the main idea or topic of the text? Then build from left to right.</p>
+<p class="sub">Use the arrows or click the text to move through ideas.</p>
+<p class="instructions">
+Consider starting with Reel 2. What is the main idea or topic of the text? Then build from left to right.
+</p>
 
-<div class="reels">
+<section class="reels">
   <div class="reel">
-    <button onclick="step(0,1)">▲</button>
-    <div class="val" id="v0" onclick="step(0,1)">—</div>
-    <button onclick="step(0,-1)">▼</button>
+    <h3>Reel 1</h3>
+    <div class="nav"><button onclick="move(0,-1)">▲</button></div>
+    <div class="value" id="v0"></div>
+    <div class="nav"><button onclick="move(0,1)">▼</button></div>
   </div>
 
   <div class="reel">
-    <button onclick="step(1,1)">▲</button>
-    <div class="val" id="v1" onclick="step(1,1)">—</div>
-    <button onclick="step(1,-1)">▼</button>
+    <h3>Reel 2</h3>
+    <div class="nav"><button onclick="move(1,-1)">▲</button></div>
+    <div class="value" id="v1"></div>
+    <div class="nav"><button onclick="move(1,1)">▼</button></div>
   </div>
 
   <div class="reel">
-    <button onclick="step(2,1)">▲</button>
-    <div class="val" id="v2" onclick="step(2,1)">—</div>
-    <button onclick="step(2,-1)">▼</button>
+    <h3>Reel 3</h3>
+    <div class="nav"><button onclick="move(2,-1)">▲</button></div>
+    <div class="value" id="v2"></div>
+    <div class="nav"><button onclick="move(2,1)">▼</button></div>
   </div>
 
   <div class="reel">
-    <button onclick="step(3,1)">▲</button>
-    <div class="val" id="v3" onclick="step(3,1)">—</div>
-    <button onclick="step(3,-1)">▼</button>
+    <h3>Reel 4</h3>
+    <div class="nav"><button onclick="move(3,-1)">▲</button></div>
+    <div class="value" id="v3"></div>
+    <div class="nav"><button onclick="move(3,1)">▼</button></div>
+  </div>
+</section>
+
+<div class="result">
+  <div class="resultText" id="result"></div>
+  <div class="actions">
+    <button onclick="resetAll()">Reset</button>
+    <button onclick="copyResult()">Copy</button>
   </div>
 </div>
 
-<div id="result">—</div>
-<div class="controls">
-  <button onclick="resetAll()">Reset</button>
-  <button onclick="copyResult()">Copy</button>
-</div>
+<div class="divider"></div>
 
-<div class="reference">
-  <div class="reelBlock">
-    <h3>Reel 1 – Actions / Processes</h3>
+<section class="lists">
+  <div class="list">
+    <h4>Reel 1 – Actions / Processes</h4>
     <ul id="list0"></ul>
   </div>
 
-  <div class="reelBlock">
-    <h3>Reel 2 – Ideas / Concepts</h3>
+  <div class="list">
+    <h4>Reel 2 – Ideas / Concepts</h4>
     <ul id="list1"></ul>
   </div>
 
-  <div class="reelBlock">
+  <div class="list">
+    <h4>Reel 3</h4>
     <ul id="list2"></ul>
   </div>
 
-  <div class="reelBlock">
-    <h3>Reel 4 – Outcomes / Focus</h3>
+  <div class="list">
+    <h4>Reel 4</h4>
     <ul id="list3"></ul>
   </div>
-</div>
+</section>
+
+</main>
 
 <script>
 const REELS = [
-  [
-    "—",
-    "revealing","exposing","complicating","challenging","reinforcing",
-    "undermining","reframing","interrogating","emphasizing","mirroring",
-    "contrasting","amplifying","suppressing","responding to","responding with",
-    "reacting to","struggling with","coping with","conforming to",
-    "rebelling against","submitting to","negotiating with",
-    "navigating through","choosing between","sacrificing","prioritizing"
-  ],
-  [
-    "—",
-    "identity","power","control","freedom","belonging","responsibility",
-    "morality","justice","authority","independence","conformity","resistance",
-    "empathy","trust","ambition","fear","change","sacrifice",
-    "fear of","desire for","pressure to","responsibility for","loyalty to",
-    "dependence on","belief in","conflict between","tension between"
-  ],
-  [
-    "—",
-    "suggests","implies","reveals","demonstrates","shows","highlights",
-    "emphasizes","reinforces","challenges","complicates","questions",
-    "critiques","exposes","warns","affirms","undermines","reframes",
-    "destabilizes","calls into question"
-  ],
-  [
-    "—",
-    "trust","identity","belonging","power","freedom","responsibility",
-    "morality","empathy","authority","independence",
-    "the cost of","the consequences of","the limits of","the value of",
-    "the importance of","the complexity of","the risks of","the impact of",
-    "the dangers of","the tension between","the balance between",
-    "our understanding of","assumptions about","expectations surrounding"
-  ]
+[
+"revealing","exposing","complicating","challenging","reinforcing","undermining",
+"reframing","interrogating","emphasizing","mirroring","contrasting","amplifying",
+"suppressing","responding to","responding with","reacting to","struggling with",
+"coping with","conforming to","rebelling against","submitting to","negotiating with",
+"navigating through","choosing between","sacrificing","prioritizing"
+],
+[
+"identity","power","control","freedom","belonging","responsibility","morality",
+"justice","authority","independence","conformity","resistance","empathy","ambition",
+"fear","change","sacrifice","fear of","desire for","pressure to","responsibility for",
+"dependence on","belief in","conflict between"
+],
+[
+"suggests","reveals","implies","highlights","demonstrates","exposes","questions",
+"reinforces","challenges","complicates","critiques","warns","supports","affirms"
+],
+[
+"trust","connection","isolation","growth","conflict","understanding","alienation",
+"belonging","resilience","loss","hope","corruption","change","identity"
+]
 ];
 
 let idx = [0,0,0,0];
 
-function step(r,d){
-  idx[r] = (idx[r] + d + REELS[r].length) % REELS[r].length;
+function render() {
+  for (let i=0;i<4;i++) {
+    document.getElementById("v"+i).textContent = REELS[i][idx[i]] || "—";
+  }
+  document.getElementById("result").textContent =
+    REELS.map((r,i)=>r[idx[i]]).filter(Boolean).join(" ");
+}
+
+function move(r,dir) {
+  idx[r] = (idx[r] + dir + REELS[r].length) % REELS[r].length;
   render();
 }
 
-function resetAll(){
+function resetAll() {
   idx = [0,0,0,0];
   render();
 }
 
-function copyResult(){
-  const t = document.getElementById("result").textContent;
-  if(t && t !== "—") navigator.clipboard.writeText(t);
+function copyResult() {
+  navigator.clipboard.writeText(document.getElementById("result").textContent);
 }
 
-function render(){
-  for(let i=0;i<4;i++){
-    const el = document.getElementById("v"+i);
-    if(el) el.textContent = REELS[i][idx[i]];
-  }
-  const out = idx.map((_,i)=>REELS[i][idx[i]]).filter(x=>x!=="—").join(" ");
-  document.getElementById("result").textContent = out || "—";
-}
-
-/* Build reference lists (cannot crash) */
-for(let r=0;r<4;r++){
-  const ul = document.getElementById("list"+r);
-  if(!ul) continue;                 // <- THIS prevents the “only Reel 1 shows” issue
-  ul.innerHTML = "";                // clear any old items
-  REELS[r].forEach(item=>{
-    if(item !== "—"){
-      const li = document.createElement("li");
-      li.textContent = item;
+function buildLists() {
+  for (let i=0;i<4;i++) {
+    const ul = document.getElementById("list"+i);
+    REELS[i].forEach(item=>{
+      const li=document.createElement("li");
+      li.textContent=item;
       ul.appendChild(li);
-    }
-  });
+    });
+  }
 }
 
+buildLists();
 render();
 </script>
 
