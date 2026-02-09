@@ -1,0 +1,175 @@
+:root {
+  --bg: #0b0f14;
+  --card: #101722;
+  --text: #e8eef7;
+  --muted: #9fb0c3;
+  --border: rgba(255,255,255,0.10);
+  --shadow: 0 10px 30px rgba(0,0,0,0.35);
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(1000px 800px at 20% 0%, #142235 0%, var(--bg) 55%);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+}
+
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 18px 48px;
+}
+
+.header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(26px, 3vw, 40px);
+  letter-spacing: 0.2px;
+}
+.sub {
+  margin: 0 0 22px;
+  color: var(--muted);
+  line-height: 1.35;
+  max-width: 70ch;
+}
+
+.reels {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.reel {
+  background: rgba(16, 23, 34, 0.75);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.reelHead {
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.reelHead h2 {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+}
+
+.reelBody {
+  padding: 12px 12px 14px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 190px;
+}
+
+.navBtn {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.navBtn:hover { background: rgba(255,255,255,0.06); }
+.navBtn:active { transform: translateY(1px); }
+
+.reelValue {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  color: var(--text);
+  padding: 14px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1.2;
+  min-height: 70px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.reelValue:hover { background: rgba(255,255,255,0.05); }
+
+.output {
+  margin-top: 16px;
+  background: rgba(16, 23, 34, 0.75);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.outputRow {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.label {
+  color: var(--muted);
+  font-size: 13px;
+  padding-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.35px;
+}
+
+.result {
+  font-size: 20px;
+  line-height: 1.35;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.07);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover { background: rgba(255,255,255,0.10); }
+button:active { transform: translateY(1px); }
+
+.copyStatus {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@media (max-width: 980px) {
+  .reels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reelBody { min-height: 170px; }
+}
+
+@media (max-width: 520px) {
+  .reels { grid-template-columns: 1fr; }
+  .outputRow { grid-template-columns: 1fr; }
+}
