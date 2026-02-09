@@ -60,11 +60,12 @@ button{
 }
 
 .reelBlock{
-  margin-bottom:28px;
+  margin:0 0 28px 0;
+  padding:0;
 }
 
 .reelBlock h3{
-  margin:0 0 8px;
+  margin:0 0 10px 0;
   font-size:15px;
   color:#c9d6e5;
 }
@@ -94,16 +95,19 @@ button{
     <div class="val" id="v0" onclick="step(0,1)">—</div>
     <button onclick="step(0,-1)">▼</button>
   </div>
+
   <div class="reel">
     <button onclick="step(1,1)">▲</button>
     <div class="val" id="v1" onclick="step(1,1)">—</div>
     <button onclick="step(1,-1)">▼</button>
   </div>
+
   <div class="reel">
     <button onclick="step(2,1)">▲</button>
     <div class="val" id="v2" onclick="step(2,1)">—</div>
     <button onclick="step(2,-1)">▼</button>
   </div>
+
   <div class="reel">
     <button onclick="step(3,1)">▲</button>
     <div class="val" id="v3" onclick="step(3,1)">—</div>
@@ -118,7 +122,6 @@ button{
 </div>
 
 <div class="reference">
-
   <div class="reelBlock">
     <h3>Reel 1 – Actions / Processes</h3>
     <ul id="list0"></ul>
@@ -137,13 +140,13 @@ button{
     <h3>Reel 4 – Outcomes / Focus</h3>
     <ul id="list3"></ul>
   </div>
-
 </div>
 
 <script>
 const REELS = [
   [
-    "—","revealing","exposing","complicating","challenging","reinforcing",
+    "—",
+    "revealing","exposing","complicating","challenging","reinforcing",
     "undermining","reframing","interrogating","emphasizing","mirroring",
     "contrasting","amplifying","suppressing","responding to","responding with",
     "reacting to","struggling with","coping with","conforming to",
@@ -151,20 +154,23 @@ const REELS = [
     "navigating through","choosing between","sacrificing","prioritizing"
   ],
   [
-    "—","identity","power","control","freedom","belonging","responsibility",
+    "—",
+    "identity","power","control","freedom","belonging","responsibility",
     "morality","justice","authority","independence","conformity","resistance",
     "empathy","trust","ambition","fear","change","sacrifice",
     "fear of","desire for","pressure to","responsibility for","loyalty to",
     "dependence on","belief in","conflict between","tension between"
   ],
   [
-    "—","suggests","implies","reveals","demonstrates","shows","highlights",
+    "—",
+    "suggests","implies","reveals","demonstrates","shows","highlights",
     "emphasizes","reinforces","challenges","complicates","questions",
     "critiques","exposes","warns","affirms","undermines","reframes",
     "destabilizes","calls into question"
   ],
   [
-    "—","trust","identity","belonging","power","freedom","responsibility",
+    "—",
+    "trust","identity","belonging","power","freedom","responsibility",
     "morality","empathy","authority","independence",
     "the cost of","the consequences of","the limits of","the value of",
     "the importance of","the complexity of","the risks of","the impact of",
@@ -173,37 +179,41 @@ const REELS = [
   ]
 ];
 
-let idx=[0,0,0,0];
+let idx = [0,0,0,0];
 
 function step(r,d){
-  idx[r]=(idx[r]+d+REELS[r].length)%REELS[r].length;
+  idx[r] = (idx[r] + d + REELS[r].length) % REELS[r].length;
   render();
 }
 
 function resetAll(){
-  idx=[0,0,0,0];
+  idx = [0,0,0,0];
   render();
 }
 
 function copyResult(){
-  const t=document.getElementById("result").textContent;
-  if(t && t!=="—") navigator.clipboard.writeText(t);
+  const t = document.getElementById("result").textContent;
+  if(t && t !== "—") navigator.clipboard.writeText(t);
 }
 
 function render(){
   for(let i=0;i<4;i++){
-    document.getElementById("v"+i).textContent=REELS[i][idx[i]];
+    const el = document.getElementById("v"+i);
+    if(el) el.textContent = REELS[i][idx[i]];
   }
-  document.getElementById("result").textContent=
-    idx.map((_,i)=>REELS[i][idx[i]]).filter(x=>x!=="—").join(" ") || "—";
+  const out = idx.map((_,i)=>REELS[i][idx[i]]).filter(x=>x!=="—").join(" ");
+  document.getElementById("result").textContent = out || "—";
 }
 
+/* Build reference lists (cannot crash) */
 for(let r=0;r<4;r++){
-  const ul=document.getElementById("list"+r);
+  const ul = document.getElementById("list"+r);
+  if(!ul) continue;                 // <- THIS prevents the “only Reel 1 shows” issue
+  ul.innerHTML = "";                // clear any old items
   REELS[r].forEach(item=>{
-    if(item!=="—"){
-      const li=document.createElement("li");
-      li.textContent=item;
+    if(item !== "—"){
+      const li = document.createElement("li");
+      li.textContent = item;
       ul.appendChild(li);
     }
   });
