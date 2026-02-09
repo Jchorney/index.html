@@ -49,14 +49,18 @@ button{
   min-height:28px;
 }
 
+.controls{
+  margin-top:8px;
+}
+
 .reference{
-  margin-top:24px;
-  font-size:14px;
-  color:#9fb0c3;
+  margin-top:40px;
+  padding-top:24px;
+  border-top:2px solid #2a3442;
 }
 
 .reference h3{
-  margin:16px 0 6px;
+  margin:18px 0 6px;
   font-size:14px;
   color:#c9d6e5;
 }
@@ -66,10 +70,13 @@ button{
   padding:0;
   margin:0;
   columns:2;
+  column-gap:36px;
 }
 
 .reference li{
   padding:2px 0;
+  color:#9fb0c3;
+  break-inside:avoid;
 }
 </style>
 </head>
@@ -104,8 +111,10 @@ button{
 </div>
 
 <div id="result">—</div>
-<button onclick="resetAll()">Reset</button>
-<button onclick="copyResult()">Copy</button>
+<div class="controls">
+  <button onclick="resetAll()">Reset</button>
+  <button onclick="copyResult()">Copy</button>
+</div>
 
 <div class="reference">
   <h3>Reel 1 – Actions / Processes</h3>
@@ -125,111 +134,36 @@ button{
 const REELS = [
   [
     "—",
-    "revealing",
-    "exposing",
-    "complicating",
-    "challenging",
-    "reinforcing",
-    "undermining",
-    "reframing",
-    "interrogating",
-    "emphasizing",
-    "mirroring",
-    "contrasting",
-    "amplifying",
-    "suppressing",
-    "responding to",
-    "responding with",
-    "reacting to",
-    "struggling with",
-    "coping with",
-    "conforming to",
-    "rebelling against",
-    "submitting to",
-    "negotiating with",
-    "navigating through",
-    "choosing between",
-    "sacrificing",
-    "prioritizing"
+    "revealing","exposing","complicating","challenging","reinforcing",
+    "undermining","reframing","interrogating","emphasizing","mirroring",
+    "contrasting","amplifying","suppressing","responding to","responding with",
+    "reacting to","struggling with","coping with","conforming to",
+    "rebelling against","submitting to","negotiating with",
+    "navigating through","choosing between","sacrificing","prioritizing"
   ],
   [
     "—",
-    "identity",
-    "power",
-    "control",
-    "freedom",
-    "belonging",
-    "responsibility",
-    "morality",
-    "justice",
-    "authority",
-    "independence",
-    "conformity",
-    "resistance",
-    "empathy",
-    "trust",
-    "ambition",
-    "fear",
-    "change",
-    "sacrifice",
-    "fear of",
-    "desire for",
-    "pressure to",
-    "responsibility for",
-    "loyalty to",
-    "dependence on",
-    "belief in",
-    "conflict between",
-    "tension between"
+    "identity","power","control","freedom","belonging","responsibility",
+    "morality","justice","authority","independence","conformity","resistance",
+    "empathy","trust","ambition","fear","change","sacrifice",
+    "fear of","desire for","pressure to","responsibility for","loyalty to",
+    "dependence on","belief in","conflict between","tension between"
   ],
   [
     "—",
-    "suggests",
-    "implies",
-    "reveals",
-    "demonstrates",
-    "shows",
-    "highlights",
-    "emphasizes",
-    "reinforces",
-    "challenges",
-    "complicates",
-    "questions",
-    "critiques",
-    "exposes",
-    "warns",
-    "affirms",
-    "undermines",
-    "reframes",
-    "destabilizes",
-    "calls into question"
+    "suggests","implies","reveals","demonstrates","shows","highlights",
+    "emphasizes","reinforces","challenges","complicates","questions",
+    "critiques","exposes","warns","affirms","undermines","reframes",
+    "destabilizes","calls into question"
   ],
   [
     "—",
-    "trust",
-    "identity",
-    "belonging",
-    "power",
-    "freedom",
-    "responsibility",
-    "morality",
-    "empathy",
-    "authority",
-    "independence",
-    "the cost of",
-    "the consequences of",
-    "the limits of",
-    "the value of",
-    "the importance of",
-    "the complexity of",
-    "the risks of",
-    "the impact of",
-    "the dangers of",
-    "the tension between",
-    "the balance between",
-    "our understanding of",
-    "assumptions about",
-    "expectations surrounding"
+    "trust","identity","belonging","power","freedom","responsibility",
+    "morality","empathy","authority","independence",
+    "the cost of","the consequences of","the limits of","the value of",
+    "the importance of","the complexity of","the risks of","the impact of",
+    "the dangers of","the tension between","the balance between",
+    "our understanding of","assumptions about","expectations surrounding"
   ]
 ];
 
