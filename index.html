@@ -28,19 +28,9 @@ main {
   padding:0 24px 60px;
 }
 
-h1 {
-  margin:0 0 6px;
-  font-size:32px;
-}
-
-.sub {
-  color:var(--muted);
-  margin-bottom:14px;
-}
-
-.instructions {
-  margin-bottom:26px;
-}
+h1 { margin:0 0 6px; font-size:32px; }
+.sub { color:var(--muted); margin-bottom:14px; }
+.instructions { margin-bottom:26px; }
 
 .reels {
   display:grid;
@@ -136,15 +126,11 @@ button {
 }
 
 @media (max-width: 900px) {
-  .reels, .lists {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .reels, .lists { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 520px) {
-  .reels, .lists {
-    grid-template-columns: 1fr;
-  }
+  .reels, .lists { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -223,35 +209,34 @@ Consider starting with Reel 2. What is the main idea or topic of the text? Then 
 </main>
 
 <script>
-/* NOTE: We include a blank option ("—") at index 0 of each reel.
-   This makes the page start blank, and Reset returns to blank. */
 const REELS = [
-  [
-    "—",
-    "revealing","exposing","complicating","challenging","reinforcing",
-    "undermining","reframing","interrogating","emphasizing","mirroring",
-    "contrasting","amplifying","suppressing","responding to","responding with",
-    "reacting to","struggling with","coping with","conforming to",
-    "rebelling against","submitting to","negotiating with",
-    "navigating through","choosing between","sacrificing","prioritizing"
-  ],
-  [
-    "—",
-    "identity","power","control","freedom","belonging","responsibility","morality",
-    "justice","authority","independence","conformity","resistance","empathy","ambition",
-    "fear","change","sacrifice","fear of","desire for","pressure to","responsibility for",
-    "dependence on","belief in","conflict between"
-  ],
-  [
-    "—",
-    "suggests","reveals","implies","highlights","demonstrates","exposes","questions",
-    "reinforces","challenges","complicates","critiques","warns","supports","affirms"
-  ],
-  [
-    "—",
-    "trust","connection","isolation","growth","conflict","understanding","alienation",
-    "belonging","resilience","loss","hope","corruption","change","identity"
-  ]
+[
+"—",
+"revealing","exposing","complicating","challenging","reinforcing","undermining",
+"reframing","interrogating","emphasizing","mirroring","contrasting","amplifying",
+"suppressing","responding to…","responding with…","reacting to…","struggling with…",
+"coping with…","conforming to…","rebelling against…","submitting to…",
+"negotiating with…","navigating through…","choosing between…",
+"sacrificing","prioritizing"
+],
+[
+"—",
+"identity","power","control","freedom","belonging","responsibility","morality",
+"justice","authority","independence","conformity","resistance","empathy","ambition",
+"fear","change","sacrifice","fear of…","desire for…","pressure to…",
+"responsibility for…","dependence on…","belief in…",
+"conflict between…"
+],
+[
+"—",
+"suggests","reveals","implies","highlights","demonstrates","exposes","questions",
+"reinforces","challenges","complicates","critiques","warns","supports","affirms"
+],
+[
+"—",
+"trust","connection","isolation","growth","conflict","understanding","alienation",
+"belonging","resilience","loss","hope","corruption","change","identity"
+]
 ];
 
 let idx = [0,0,0,0];
@@ -285,7 +270,7 @@ function buildLists() {
     const ul = document.getElementById("list"+i);
     ul.innerHTML = "";
     REELS[i].forEach(item=>{
-      if(item === "—") return; // lists show choices, not the blank
+      if(item === "—") return;
       const li=document.createElement("li");
       li.textContent=item;
       ul.appendChild(li);
@@ -294,7 +279,7 @@ function buildLists() {
 }
 
 buildLists();
-resetAll();  // ensures initial load is blank and consistent
+resetAll();
 </script>
 
 </body>
