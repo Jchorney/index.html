@@ -84,7 +84,7 @@ button {
   color:#000;
   border:none;
   border-radius:6px;
-  padding:6px 10px;
+  padding:6px 12px;
   font-weight:600;
 }
 
@@ -111,7 +111,6 @@ button {
   border-top:1px solid var(--border);
 }
 
-/* Lists */
 .lists {
   display:grid;
   grid-template-columns: repeat(4, 1fr);
@@ -133,7 +132,6 @@ button {
 .list li {
   margin:6px 0;
   font-size:14px;
-  color:var(--text);
 }
 
 @media (max-width: 900px) {
@@ -266,10 +264,13 @@ function move(r,dir) {
 function resetAll() {
   idx = [0,0,0,0];
   render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function copyResult() {
-  navigator.clipboard.writeText(document.getElementById("result").textContent);
+  navigator.clipboard.writeText(
+    document.getElementById("result").textContent
+  );
 }
 
 function buildLists() {
