@@ -99,6 +99,7 @@ button {
 .resultText {
   font-size:20px;
   margin-bottom:12px;
+  min-height:24px;
 }
 
 .actions {
@@ -222,28 +223,35 @@ Consider starting with Reel 2. What is the main idea or topic of the text? Then 
 </main>
 
 <script>
+/* NOTE: We include a blank option ("—") at index 0 of each reel.
+   This makes the page start blank, and Reset returns to blank. */
 const REELS = [
-[
-"revealing","exposing","complicating","challenging","reinforcing","undermining",
-"reframing","interrogating","emphasizing","mirroring","contrasting","amplifying",
-"suppressing","responding to","responding with","reacting to","struggling with",
-"coping with","conforming to","rebelling against","submitting to","negotiating with",
-"navigating through","choosing between","sacrificing","prioritizing"
-],
-[
-"identity","power","control","freedom","belonging","responsibility","morality",
-"justice","authority","independence","conformity","resistance","empathy","ambition",
-"fear","change","sacrifice","fear of","desire for","pressure to","responsibility for",
-"dependence on","belief in","conflict between"
-],
-[
-"suggests","reveals","implies","highlights","demonstrates","exposes","questions",
-"reinforces","challenges","complicates","critiques","warns","supports","affirms"
-],
-[
-"trust","connection","isolation","growth","conflict","understanding","alienation",
-"belonging","resilience","loss","hope","corruption","change","identity"
-]
+  [
+    "—",
+    "revealing","exposing","complicating","challenging","reinforcing",
+    "undermining","reframing","interrogating","emphasizing","mirroring",
+    "contrasting","amplifying","suppressing","responding to","responding with",
+    "reacting to","struggling with","coping with","conforming to",
+    "rebelling against","submitting to","negotiating with",
+    "navigating through","choosing between","sacrificing","prioritizing"
+  ],
+  [
+    "—",
+    "identity","power","control","freedom","belonging","responsibility","morality",
+    "justice","authority","independence","conformity","resistance","empathy","ambition",
+    "fear","change","sacrifice","fear of","desire for","pressure to","responsibility for",
+    "dependence on","belief in","conflict between"
+  ],
+  [
+    "—",
+    "suggests","reveals","implies","highlights","demonstrates","exposes","questions",
+    "reinforces","challenges","complicates","critiques","warns","supports","affirms"
+  ],
+  [
+    "—",
+    "trust","connection","isolation","growth","conflict","understanding","alienation",
+    "belonging","resilience","loss","hope","corruption","change","identity"
+  ]
 ];
 
 let idx = [0,0,0,0];
@@ -252,8 +260,8 @@ function render() {
   for (let i=0;i<4;i++) {
     document.getElementById("v"+i).textContent = REELS[i][idx[i]] || "—";
   }
-  document.getElementById("result").textContent =
-    REELS.map((r,i)=>r[idx[i]]).filter(Boolean).join(" ");
+  const phrase = REELS.map((r,i)=>r[idx[i]]).filter(w => w && w !== "—").join(" ");
+  document.getElementById("result").textContent = phrase || "—";
 }
 
 function move(r,dir) {
@@ -268,15 +276,16 @@ function resetAll() {
 }
 
 function copyResult() {
-  navigator.clipboard.writeText(
-    document.getElementById("result").textContent
-  );
+  const t = document.getElementById("result").textContent;
+  if (t && t !== "—") navigator.clipboard.writeText(t);
 }
 
 function buildLists() {
   for (let i=0;i<4;i++) {
     const ul = document.getElementById("list"+i);
+    ul.innerHTML = "";
     REELS[i].forEach(item=>{
+      if(item === "—") return; // lists show choices, not the blank
       const li=document.createElement("li");
       li.textContent=item;
       ul.appendChild(li);
@@ -285,7 +294,7 @@ function buildLists() {
 }
 
 buildLists();
-render();
+resetAll();  // ensures initial load is blank and consistent
 </script>
 
 </body>
